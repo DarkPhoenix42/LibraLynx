@@ -7,3 +7,5 @@ migration_down:
 	migrate -path db/migrations/ -database "$(DB_URL)" -verbose down
 migration_fix:
 	migrate -path db/migrations/ -database "$(DB_URL)" -verbose force 1
+all:
+	go run main.go

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/DarkPhoenix42/LibraLynx/db"
+	"fmt"
 )
 
 func main() {
-	db.Connect()
+	fmt.Println("Starting the server..")
 }
