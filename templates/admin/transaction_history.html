@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{template "head"}}
+<title>Transaction History</title>
+
+<body>
+    {{template "nav"}}
+    <div class="container text-center mt-6">
+        {{template "alert_box" .MessageData}}
+        <h1>Transaction History</h1>
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Book</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Transactions}}
+                <tr>
+                    <td>
+                        {{ .Username }}
+                    </td>
+                    <td>
+                        {{ .BookTitle }}
+                    </td>
+                    <td>
+                        {{if eq .Type "borrow"}}
+                        {{if .BorrowDate}}
+                        {{.BorrowDate.Format "01/02/2006"}}
+                        {{else}}
+                            null
+                            {{end}}
+                            {{else}}
+                                {{if .ReturnDate}}
+                                {{.ReturnDate.Format "01/02/2006"}}
+                                {{else}}
+                                    null
+                                    {{end}}
+                                    {{end}}
+                    </td>
+                    </td>
+                    <td>
+                        {{ .Type }}
+                    </td>
+                    <td>
+                        {{ .Status }}
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

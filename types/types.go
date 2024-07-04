@@ -8,7 +8,7 @@ type User struct {
 	Username           string `json:"username"`
 	Password           string `json:"password"`
 	IsAdmin            bool   `json:"is_admin"`
-	AdminRequestStatus string `json:"admin_request_status"`
+	AdminRequestStatus string `json:"admin_request_status"` // Enum: none, pending
 }
 
 type Book struct {
@@ -23,10 +23,49 @@ type Transaction struct {
 	TransactionID int        `json:"transaction_id"`
 	BookID        int        `json:"book_id"`
 	UserID        int        `json:"user_id"`
-	BorrowDate    time.Time  `json:"borrow_date"`
-	DueDate       time.Time  `json:"due_date"`
-	ReturnDate    *time.Time `json:"return_date,omitempty"`
+	BorrowDate    *time.Time `json:"borrow_date"`
+	DueDate       *time.Time `json:"due_date"`
+	ReturnDate    *time.Time `json:"return_date"`
 	Fine          float64    `json:"fine"`
 	Type          string     `json:"type"`   // Enum: borrow, return
 	Status        string     `json:"status"` // Enum: pending, accepted, rejected
+}
+
+type AdminRequest struct {
+	UserID   int    `json:"user_id"`
+	Username string `json:"username"`
+}
+
+type MessageData struct {
+	Message     string `json:"message"`
+	MessageType string `json:"message_type"`
+}
+
+type ViewTransaction struct {
+	TransactionID int        `json:"transaction_id"`
+	BookID        int        `json:"book_id"`
+	BookTitle     string     `json:"book_title"`
+	UserID        int        `json:"user_id"`
+	Username      string     `json:"username"`
+	BorrowDate    *time.Time `json:"borrow_date"`
+	DueDate       *time.Time `json:"due_date"`
+	ReturnDate    *time.Time `json:"return_date"`
+	Fine          float64    `json:"fine"`
+	Type          string     `json:"type"`   // Enum: borrow, return
+	Status        string     `json:"status"` // Enum: pending, accepted, rejected
+}
+
+type ViewBooksData struct {
+	Books       []Book
+	MessageData MessageData
+}
+
+type ViewTransactionsData struct {
+	Transactions []ViewTransaction
+	MessageData  MessageData
+}
+
+type ViewAdminRequestsData struct {
+	Requests    []AdminRequest
+	MessageData MessageData
 }

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{template "head"}}
+<title>User Request Admin</title>
+
+<body>
+    {{template "nav"}}
+    <div class="container text-center mt-6">
+        {{template "alert_box" .}}
+        <h1>User Request Admin</h1>
+        <p>Click the button below to request admin permission:</p>
+        <form action="/request_admin" method="post">
+            <button type="submit" class="btn btn-primary">Request Admin Privileges!</button>
+        </form>
+    </div>
+</body>
+
+</html>

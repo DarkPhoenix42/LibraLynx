@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{{template "head"}}
+<title>Book Deletion</title>
+
+<body>
+    {{template "nav"}}
+    <div class="container text-center mt-6">
+        {{template "alert_box" .MessageData}}
+        <h1>Select a Book to Delete</h1>
+        <form action="/admin/delete_book" method="post">
+            <div class="form-group">
+                <label for="book_id">Select Book:</label>
+                <select class="form-control" id="book_id" name="book_id">
+                    {{range .Books}}
+                    <option value="{{ .BookID }}">
+                        {{ .Title }}
+                    </option>
+                    {{end}}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-danger">Delete Book</button>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 DELETE FROM books WHERE title IN (
     'And Then There Were None',
     '1984',
@@ -20,3 +21,4 @@ DELETE FROM books WHERE title IN (
     'The Road',
     'Frankenstein'
 );
+SET FOREIGN_KEY_CHECKS = 1;

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{template "head"}}
+<title>Borrow Requests</title>
+
+<body>
+    {{template "nav"}}
+    <div class="container text-center mt-6">
+        {{template "alert_box" .MessageData}}
+        <h1>Borrow Requests</h1>
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th>Book ID</th>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Book Title</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Transactions}}
+                <tr>
+                    <td>
+                        {{.BookID }}
+                    </td>
+                    <td>
+                        {{ .UserID }}
+                    </td>
+                    <td>
+                        {{ .Username }}
+                    </td>
+                    <td>
+                        {{ .BookTitle }}
+                    </td>
+                    <td>
+                        <div class="btn-group justify-content-center" role="group">
+                            <form action="/admin/accept_borrowal/{{.TransactionID}}" method="post">
+                                <button class="btn btn-success mr-2">Accept</button>
+                            </form>
+                            <form action="/admin/reject_borrowal/{{.TransactionID}}" method="post">
+                                <button class="btn btn-danger">Reject</button>
+                            </form>
+                        </div>
+
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>

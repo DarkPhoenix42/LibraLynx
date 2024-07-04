@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+{{template "head"}}
+
+<title>Book List</title>
+
+<body>
+    {{template "nav"}}
+    <div class="container text-center mt-6">
+        {{template "alert_box" .MessageData}}
+        <h1>Book List</h1>
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Genre</th>
+                    <th>Available Copies</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .Books}}
+                <tr>
+                    <td>
+                        {{ .Title }}
+                    </td>
+                    <td>
+                        {{ .Author }}
+                    </td>
+                    <td>
+                        {{ .Genre }}
+                    </td>
+                    <td>
+                        {{ .AvailableCopies }}
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+    </div>
+</body>
+
+</html>

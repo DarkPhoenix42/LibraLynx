@@ -1,0 +1,71 @@
+version: "3.8"
+services:
+  mysqldb:
+    image: mysql:latest
+
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    expose:
+      - "3306"
+
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${DB_PASSWORD}"
+
+    networks:
+      - libralynx
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      retries: 10
+      interval: 3s
+      timeout: 30s
+
+    restart: always
+
+  migrate:
+    image: migrate/migrate
+
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+
+    volumes:
+      - ./db/migrations:/migrations
+
+    networks:
+      - libralynx
+
+    command:
+      [
+        "-path",
+        "/migrations",
+        "-database",
+        "mysql://${DB_USER}:${DB_PASSWORD}@tcp(${DB_HOST}:${DB_PORT})/${DB_NAME}",
+        "up",
+      ]
+
+    restart: always
+
+  libralynx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - 8080:8080
+
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+
+    networks:
+      - libralynx
+
+volumes:
+  mysqldb:
+  migrate:
+
+networks:
+  libralynx:
+    driver: bridge

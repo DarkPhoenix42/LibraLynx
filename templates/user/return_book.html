@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{template "head"}}
+<title>Books Borrowed</title>
+
+<body>
+    {{template "nav"}}
+
+    <div class="container text-center mt-6">
+        {{template "alert_box" .MessageData}}
+        <h1>Books Borrrowed</h1>
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Transactions}}
+                <tr>
+                    <td>
+                        {{ .BookTitle }}
+                    </td>
+                    <td>
+                        {{ .BorrowDate.Format "02/01/2006" }}
+                    </td>
+                    </td>
+                    <td>
+                        <form action="/return_book/{{.TransactionID}}" method="post">
+                            <button class="btn btn-primary">Return</button>
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+</body>
+
+</html>

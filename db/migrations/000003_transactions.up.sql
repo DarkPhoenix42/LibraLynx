@@ -5,6 +5,7 @@ CREATE TABLE transactions(
     borrow_date DATE,
     due_date DATE,
     return_date DATE,
+    fine DECIMAL(5,2) DEFAULT 0.00,
     type ENUM('borrow', 'return'),
     status ENUM('pending','accepted','rejected'),
     FOREIGN KEY (book_id) REFERENCES books(book_id),
