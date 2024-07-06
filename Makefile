@@ -16,4 +16,4 @@ migration_restart:
 	
 run:
 	make migration_restart
-	go run main.go
+	go run cmd/main.go

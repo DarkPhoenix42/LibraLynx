@@ -3,7 +3,7 @@ package utils_test
 import (
 	"testing"
 
-	"github.com/DarkPhoenix42/LibraLynx/utils"
+	"github.com/DarkPhoenix42/LibraLynx/pkg/utils"
 )
 
 type Test struct {
