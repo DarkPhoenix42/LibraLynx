@@ -1,5 +1,7 @@
 FROM golang:1.22.4
 
+ARG APP_PORT
+
 RUN mkdir /app
 
 WORKDIR /app
@@ -12,6 +14,6 @@ RUN go mod tidy
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE ${APP_PORT}
 
 CMD ["go", "run", "cmd/main.go"]

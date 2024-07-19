@@ -1,6 +1,7 @@
-DB_HOST=mysqldb
+DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=password
 DB_NAME=libralynx
+APP_PORT=8080
 JWT_SECRET=absolutelysupersecretkey

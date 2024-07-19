@@ -1,7 +1,12 @@
 package main
 
-import "github.com/DarkPhoenix42/LibraLynx/pkg/api"
+import (
+	"fmt"
+
+	"github.com/DarkPhoenix42/LibraLynx/pkg/api"
+)
 
 func main() {
+	fmt.Println("Starting LibraLynx API")
 	api.Start()
 }

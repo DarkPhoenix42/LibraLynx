@@ -19,10 +19,18 @@ This project is a library management system twritten in go using the MVC archite
 - View their transaction history.
 
 ## Setup
-
 1. Clone the repository.
 2. Run `mv .envsample .env` and modify the .env file as you wish.
-3. Start the docker containers using `docker compose up` and connect at `localhost:8080`.
+
+### Using Docker
+1. Set the DB_HOST variable in .env file to `mysqldb`.
+1. Start the docker containers using `docker compose up` and connect at `localhost:8080`.
+
+### Without Using Docker
+1. Install golang, and golang migrate and setup mysql server on your device.
+2. run `./run.sh`
+3. Connect to the website at `libralynx.org`.
 
 ## Note
+If you change DB_NAME in .env file then change init.sql accordingly.
 The first user is made admin by default.

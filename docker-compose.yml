@@ -1,71 +1,75 @@
 version: "3.8"
 services:
-  mysqldb:
-    image: mysql:latest
+    mysqldb:
+        image: mysql:latest
 
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        volumes:
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
-    expose:
-      - "3306"
+        ports:
+            - "3305:3306"
+        expose:
+            - "3306"
 
-    environment:
-      - "MYSQL_ROOT_PASSWORD=${DB_PASSWORD}"
+        environment:
+            - "MYSQL_ROOT_PASSWORD=${DB_PASSWORD}"
 
-    networks:
-      - libralynx
+        networks:
+            - libralynx
 
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      retries: 10
-      interval: 3s
-      timeout: 30s
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            retries: 10
+            interval: 3s
+            timeout: 30s
 
-    restart: always
+        restart: always
 
-  migrate:
-    image: migrate/migrate
+    migrate:
+        image: migrate/migrate
 
-    depends_on:
-      mysqldb:
-        condition: service_healthy
+        depends_on:
+            mysqldb:
+                condition: service_healthy
 
-    volumes:
-      - ./db/migrations:/migrations
+        volumes:
+            - ./db/migrations:/migrations
 
-    networks:
-      - libralynx
+        networks:
+            - libralynx
 
-    command:
-      [
-        "-path",
-        "/migrations",
-        "-database",
-        "mysql://${DB_USER}:${DB_PASSWORD}@tcp(${DB_HOST}:${DB_PORT})/${DB_NAME}",
-        "up",
-      ]
+        command:
+            [
+                "-path",
+                "/migrations",
+                "-database",
+                "mysql://${DB_USER}:${DB_PASSWORD}@tcp(${DB_HOST}:${DB_PORT})/${DB_NAME}",
+                "up",
+            ]
 
-    restart: always
+        restart: always
 
-  libralynx:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    libralynx:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+                - APP_PORT=${APP_PORT}
 
-    ports:
-      - 8080:8080
+        ports:
+            - 8080:8080
 
-    depends_on:
-      mysqldb:
-        condition: service_healthy
+        depends_on:
+            mysqldb:
+                condition: service_healthy
 
-    networks:
-      - libralynx
+        networks:
+            - libralynx
 
 volumes:
-  mysqldb:
-  migrate:
+    mysqldb:
+    migrate:
 
 networks:
-  libralynx:
-    driver: bridge
+    libralynx:
+        driver: bridge

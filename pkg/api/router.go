@@ -3,6 +3,7 @@ package api
 import (
 	"log"
 	"net/http"
+	"os"
 
 	database "github.com/DarkPhoenix42/LibraLynx/db"
 	admin_controllers "github.com/DarkPhoenix42/LibraLynx/pkg/controllers/admin"
@@ -123,8 +124,9 @@ func Start() {
 	adminTransactionHistoryPage := http.HandlerFunc(admin_controllers.TransactionHistoryPage)
 	http.Handle("GET /admin/transaction_history", handleJWT(handleAdmin(adminTransactionHistoryPage)))
 
-	log.Printf("Server started at http://localhost:8080\n")
-	err = http.ListenAndServe(":8080", nil)
+	port := os.Getenv("APP_PORT")
+	log.Printf("Server started at http://localhost:%s\n", port)
+	err = http.ListenAndServe(":"+port, nil)
 
 	if err != nil {
 		log.Fatalf("Error %s starting server.\n", err)

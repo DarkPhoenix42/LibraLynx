@@ -9,7 +9,6 @@ func SetCookie(w http.ResponseWriter, name string, value string) {
 		Path:     "/",
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
-		Secure:   true,
 	}
 	http.SetCookie(w, &cookie)
 }
@@ -22,7 +21,6 @@ func DeleteCookie(w http.ResponseWriter, name string) {
 		MaxAge:   -1,
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
-		Secure:   true,
 	}
 	http.SetCookie(w, &cookie)
 }
