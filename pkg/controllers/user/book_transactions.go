@@ -11,7 +11,7 @@ import (
 )
 
 func ViewBooksPage(w http.ResponseWriter, r *http.Request) {
-	books, err := models.GetAllBooks()
+	books, err := models.GetAllAvailableBooks()
 	message, msg_type := utils.GetAndClearMessage(w, r)
 
 	if err != nil {
@@ -65,7 +65,7 @@ func RequestBorrowal(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	
+
 	err = models.InitiateBorrowTransaction(book_id, user_id)
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")

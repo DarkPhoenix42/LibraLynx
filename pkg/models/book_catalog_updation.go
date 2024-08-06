@@ -21,7 +21,7 @@ func UpdateBook(book_id int, title, author, genre string, available_copies int) 
 }
 
 func DeleteBook(book_id int) error {
-	query := "DELETE FROM books WHERE book_id = ?"
+	query := "UPDATE books SET available_copies = 0 WHERE book_id = ?"
 	_, err := db.DB.Exec(query, book_id)
 	return err
 }

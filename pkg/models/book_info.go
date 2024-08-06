@@ -50,3 +50,13 @@ func GetAllBooks() ([]types.Book, error) {
 	defer rows.Close()
 	return ParseBookRows(rows)
 }
+
+func GetAllAvailableBooks() ([]types.Book, error) {
+	query := "SELECT * FROM books WHERE available_copies > 0"
+	rows, err := db.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	return ParseBookRows(rows)
+}
