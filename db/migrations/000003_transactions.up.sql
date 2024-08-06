@@ -2,12 +2,9 @@ CREATE TABLE transactions(
     transaction_id INT AUTO_INCREMENT PRIMARY KEY,
     book_id INT,
     user_id INT,
-    borrow_date DATE,
-    due_date DATE,
-    return_date DATE,
-    fine DECIMAL(5,2) DEFAULT 0.00,
+    date DATE,
     type ENUM('borrow', 'return'),
-    status ENUM('pending','accepted','rejected'),
+    status ENUM('pending','rejected','accepted', 'archived'),
     FOREIGN KEY (book_id) REFERENCES books(book_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );

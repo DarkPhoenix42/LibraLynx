@@ -65,6 +65,7 @@ func RequestBorrowal(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	
 	err = models.InitiateBorrowTransaction(book_id, user_id)
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
@@ -114,14 +115,14 @@ func RequestReturn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = models.UpdateTransactionType(transaction_id, "return")
+	err = models.InitiateReturnTransaction(transaction.BookID, user_id)
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 		http.Redirect(w, r, "/return_book", http.StatusSeeOther)
 		return
 	}
 
-	err = models.UpdateTransactionStatus(transaction_id, "pending")
+	err = models.UpdateTransactionStatus(transaction_id, "archived")
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 	} else {

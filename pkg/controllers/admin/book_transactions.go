@@ -13,6 +13,7 @@ import (
 func BorrowRequestsPage(w http.ResponseWriter, r *http.Request) {
 	requests, err := models.GetPendingBorrowTransactions()
 	message, msg_type := utils.GetAndClearMessage(w, r)
+
 	if err != nil {
 		views.BorrowRequests(w, types.ViewTransactionsData{
 			Transactions: []types.ViewTransaction{},
@@ -60,30 +61,35 @@ func AcceptBorrowal(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin/borrow_requests", http.StatusSeeOther)
 		return
 	}
+
 	err = models.UpdateTransactionStatus(transaction_id, "accepted")
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 		http.Redirect(w, r, "/admin/borrow_requests", http.StatusSeeOther)
 		return
 	}
-	err = models.UpdateBorrowDate(transaction_id)
+
+	err = models.UpdateTransactionDate(transaction_id)
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 		http.Redirect(w, r, "/admin/borrow_requests", http.StatusSeeOther)
 		return
 	}
+
 	transaction, err := models.GetTransactionByID(transaction_id)
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 		http.Redirect(w, r, "/admin/borrow_requests", http.StatusSeeOther)
 		return
 	}
+
 	err = models.DecrementAvailableCopies(transaction.BookID)
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 	} else {
 		utils.SetMessage(w, "Borrow request accepted!", "success")
 	}
+
 	http.Redirect(w, r, "/admin/borrow_requests", http.StatusSeeOther)
 }
 
@@ -94,30 +100,35 @@ func AcceptReturn(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin/return_requests", http.StatusSeeOther)
 		return
 	}
+
 	transaction, err := models.GetTransactionByID(transaction_id)
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 		http.Redirect(w, r, "/admin/return_requests", http.StatusSeeOther)
 		return
 	}
+
 	err = models.UpdateTransactionStatus(transaction_id, "accepted")
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 		http.Redirect(w, r, "/admin/return_requests", http.StatusSeeOther)
 		return
 	}
-	err = models.UpdateReturnDate(transaction_id)
+
+	err = models.UpdateTransactionDate(transaction_id)
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 		http.Redirect(w, r, "/admin/return_requests", http.StatusSeeOther)
 		return
 	}
+
 	err = models.IncrementAvailableCopies(transaction.BookID)
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 	} else {
 		utils.SetMessage(w, "Return request accepted!", "success")
 	}
+
 	http.Redirect(w, r, "/admin/return_requests", http.StatusSeeOther)
 }
 
@@ -128,12 +139,21 @@ func RejectBorrowal(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin/borrow_requests", http.StatusSeeOther)
 		return
 	}
+
+	err = models.UpdateTransactionDate(transaction_id)
+	if err != nil {
+		utils.SetMessage(w, "Internal server error!", "error")
+		http.Redirect(w, r, "/admin/borrow_requests", http.StatusSeeOther)
+		return
+	}
+
 	err = models.UpdateTransactionStatus(transaction_id, "rejected")
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 	} else {
 		utils.SetMessage(w, "Borrow request rejected!", "success")
 	}
+
 	http.Redirect(w, r, "/admin/borrow_requests", http.StatusSeeOther)
 }
 
@@ -144,11 +164,20 @@ func RejectReturn(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin/return_requests", http.StatusSeeOther)
 		return
 	}
+
+	err = models.UpdateTransactionDate(transaction_id)
+	if err != nil {
+		utils.SetMessage(w, "Internal server error!", "error")
+		http.Redirect(w, r, "/admin/borrow_requests", http.StatusSeeOther)
+		return
+	}
+
 	err = models.UpdateTransactionStatus(transaction_id, "rejected")
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 	} else {
 		utils.SetMessage(w, "Return request rejected!", "success")
 	}
+
 	http.Redirect(w, r, "/admin/return_requests", http.StatusSeeOther)
 }

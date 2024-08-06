@@ -23,10 +23,7 @@ type Transaction struct {
 	TransactionID int        `json:"transaction_id"`
 	BookID        int        `json:"book_id"`
 	UserID        int        `json:"user_id"`
-	BorrowDate    *time.Time `json:"borrow_date"`
-	DueDate       *time.Time `json:"due_date"`
-	ReturnDate    *time.Time `json:"return_date"`
-	Fine          float64    `json:"fine"`
+	Date          *time.Time `json:"date"`
 	Type          string     `json:"type"`   // Enum: borrow, return
 	Status        string     `json:"status"` // Enum: pending, accepted, rejected
 }
@@ -47,10 +44,7 @@ type ViewTransaction struct {
 	BookTitle     string     `json:"book_title"`
 	UserID        int        `json:"user_id"`
 	Username      string     `json:"username"`
-	BorrowDate    *time.Time `json:"borrow_date"`
-	DueDate       *time.Time `json:"due_date"`
-	ReturnDate    *time.Time `json:"return_date"`
-	Fine          float64    `json:"fine"`
+	Date          *time.Time `json:"date"`
 	Type          string     `json:"type"`   // Enum: borrow, return
 	Status        string     `json:"status"` // Enum: pending, accepted, rejected
 }

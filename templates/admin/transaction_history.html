@@ -29,19 +29,11 @@
                         {{ .BookTitle }}
                     </td>
                     <td>
-                        {{if eq .Type "borrow"}}
-                        {{if .BorrowDate}}
-                        {{.BorrowDate.Format "01/02/2006"}}
+                        {{if .Date}}
+                            {{.Date.Format "01/02/2006"}}
                         {{else}}
                             null
-                            {{end}}
-                            {{else}}
-                                {{if .ReturnDate}}
-                                {{.ReturnDate.Format "01/02/2006"}}
-                                {{else}}
-                                    null
-                                    {{end}}
-                                    {{end}}
+                        {{end}}
                     </td>
                     </td>
                     <td>

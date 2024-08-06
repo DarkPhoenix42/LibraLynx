@@ -16,7 +16,21 @@ func RequestAdminPage(w http.ResponseWriter, r *http.Request) {
 
 func RequestAdmin(w http.ResponseWriter, r *http.Request) {
 	user_id := r.Context().Value("user_id").(int)
-	err := models.UpdateUserAdminRequestStatus(user_id, "pending")
+	user_admin_status, err := models.GetUserAdminRequestStatus(user_id)
+	
+	if err != nil {
+		utils.SetMessage(w, "Internal server error!", "error")
+		http.Redirect(w, r, "/request_admin", http.StatusSeeOther)
+		return
+	}
+	
+	if user_admin_status == "pending" {
+		utils.SetMessage(w, "Admin request already sent!", "error")
+		http.Redirect(w, r, "/request_admin", http.StatusSeeOther)
+		return
+	}
+
+	err = models.UpdateUserAdminRequestStatus(user_id, "pending")
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 	} else {

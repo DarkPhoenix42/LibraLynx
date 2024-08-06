@@ -48,3 +48,4 @@ func TestDecodeToken(t *testing.T) {
 		}
 	}
 }
+

@@ -7,6 +7,6 @@ import (
 )
 
 func main() {
-	fmt.Println("Starting LibraLynx API")
+	fmt.Println("Starting LibraLynx API..")
 	api.Start()
 }

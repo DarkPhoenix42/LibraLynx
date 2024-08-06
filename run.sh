@@ -21,6 +21,8 @@ echo "Downloading apache2 and setting up a virtual host."
 sudo apt update && sudo apt-get install apache2 -y
 sudo a2enmod proxy proxy_http
 cd /etc/apache2/sites-available
+sudo mkdir -p /var/log/apache2/
+sudo chmod -R 744 /var/log/apache2/
 
 sudo sh -c 'echo "<VirtualHost *:80>
 	ServerName libralynx.org

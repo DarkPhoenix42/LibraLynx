@@ -73,5 +73,21 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "/login", http.StatusSeeOther)
+	user, err = models.GetUserByUsername(username)
+	if err != nil {
+		utils.SetMessage(w, "Internal server error!", "error")
+		http.Redirect(w, r, "/register", http.StatusSeeOther)
+		return
+	}
+	
+	user_id := user.UserID
+	token, err := utils.CreateToken(user_id, is_admin)
+	if err != nil {
+		utils.SetMessage(w, "Internal server error!", "error")
+		http.Redirect(w, r, "/register", http.StatusSeeOther)
+		return
+	}
+
+	utils.SetCookie(w, "jwt", token)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

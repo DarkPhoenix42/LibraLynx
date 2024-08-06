@@ -14,10 +14,7 @@ func GetTransactionByID(transaction_id int) (*types.Transaction, error) {
 		&transaction.TransactionID,
 		&transaction.BookID,
 		&transaction.UserID,
-		&transaction.BorrowDate,
-		&transaction.DueDate,
-		&transaction.ReturnDate,
-		&transaction.Fine,
+		&transaction.Date,
 		&transaction.Type,
 		&transaction.Status)
 

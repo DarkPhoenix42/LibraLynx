@@ -64,7 +64,7 @@ func AddBook(w http.ResponseWriter, r *http.Request) {
 	genre := r.FormValue("genre")
 	available_copies, err := strconv.Atoi(r.FormValue("available_copies"))
 
-	if err != nil {
+	if err != nil || available_copies <= 0 {
 		utils.SetMessage(w, "Invalid number of available copies!", "error")
 		http.Redirect(w, r, "/admin/add_book", http.StatusSeeOther)
 		return
@@ -79,7 +79,6 @@ func AddBook(w http.ResponseWriter, r *http.Request) {
 			utils.SetMessage(w, "Book already exists, so added copies instead!", "success")
 		}
 	} else {
-
 		err = models.AddBook(title, author, genre, available_copies)
 		if err != nil {
 			utils.SetMessage(w, "Internal server error!", "error")
@@ -116,18 +115,20 @@ func UpdateBook(w http.ResponseWriter, r *http.Request) {
 	author := r.FormValue("author")
 	genre := r.FormValue("genre")
 	available_copies, err := strconv.Atoi(r.FormValue("available_copies"))
-	if err != nil {
+
+	if err != nil || available_copies <= 0 {
 		utils.SetMessage(w, "Invalid number of available copies!", "error")
 		http.Redirect(w, r, "/admin/update_book", http.StatusSeeOther)
 		return
 	}
+
 	err = models.UpdateBook(book_id, title, author, genre, available_copies)
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")
 	} else {
 		utils.SetMessage(w, "Book updated successfully!", "success")
-
 	}
+
 	http.Redirect(w, r, "/admin/update_book", http.StatusSeeOther)
 }
 
@@ -163,18 +164,26 @@ func DeleteBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	okay_to_delete := true
+	var cannot_delete_message string
 	for _, book_transaction := range book_transactions {
-		if (book_transaction.Type == "borrow" && book_transaction.Status == "accepted") || (book_transaction.Status == "pending") {
+		if book_transaction.Type == "borrow" && book_transaction.Status == "accepted" {
 			okay_to_delete = false
+			cannot_delete_message = "Cannot delete book with accepted borrow transactions!"
+			break
+		} else if book_transaction.Status == "pending" {
+			okay_to_delete = false
+			cannot_delete_message = "Cannot delete book with pending transactions!"
 			break
 		}
+
 	}
 
 	if !okay_to_delete {
-		utils.SetMessage(w, "Cannot delete book with pending transactions!", "error")
+		utils.SetMessage(w, cannot_delete_message, "error")
 		http.Redirect(w, r, "/admin/delete_book", http.StatusSeeOther)
 		return
 	}
+
 	err = models.DeleteBook(book_id)
 	if err != nil {
 		utils.SetMessage(w, "Internal server error!", "error")

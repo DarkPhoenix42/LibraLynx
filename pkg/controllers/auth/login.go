@@ -14,6 +14,7 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 	message, msg_type := utils.GetAndClearMessage(w, r)
 	views.Login(w, types.MessageData{Message: message, MessageType: msg_type})
 }
+
 func Login(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("username")
 	password := r.FormValue("password")
